@@ -66,10 +66,14 @@ namespace FireSharp.EventStreaming
 
         private void Replace(SimpleCacheItem root, JsonReader reader)
         {
-            UpdateChildren(root, reader, true);
+            UpdateChildren(root, reader, null, true);
+
+            var added = Added;
+            if (added == null) return;
+            added(null, null, null);
         }
 
-        private void UpdateChildren(SimpleCacheItem root, JsonReader reader, bool replace = false)
+        private void UpdateChildren(SimpleCacheItem root, JsonReader reader, string currentProperty = null, bool replace = false)
         {
             if (replace)
             {
@@ -86,7 +90,7 @@ namespace FireSharp.EventStreaming
                 switch (reader.TokenType)
                 {
                     case JsonToken.PropertyName:
-                        UpdateChildren(GetNamedChild(root, reader.Value.ToString()), reader);
+                        UpdateChildren(GetNamedChild(root, reader.Value.ToString()), reader, reader.Value.ToString());
                         break;
                     case JsonToken.Boolean:
                     case JsonToken.Bytes:

@@ -93,7 +93,7 @@ namespace FireSharp
         private Uri PrepareUri(string path)
         {
             var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
-                ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
+                ? string.Format("{0}.json?auth={1}&orderBy=%22timestamp%22&limitToLast=5", path, _config.AuthSecret)
                 : string.Format("{0}.json", path);
 
             var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
